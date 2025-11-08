@@ -1,0 +1,61 @@
+# Configuration for Gemma 2B
+# Best for: High quality outputs with efficient training
+# Memory: ~4-5GB VRAM with QLoRA
+# Recommended for: RTX 2080 (8GB) - RECOMMENDED
+
+# Model configuration
+model_name: "google/gemma-2b"
+use_4bit: true
+use_8bit: false
+bnb_4bit_compute_dtype: "bfloat16"  # Use "float16" if bf16 not supported
+bnb_4bit_quant_type: "nf4"
+use_nested_quant: true
+
+# LoRA parameters
+lora_r: 16
+lora_alpha: 32
+lora_dropout: 0.05
+lora_target_modules:
+  - "q_proj"
+  - "k_proj"
+  - "v_proj"
+  - "o_proj"
+  - "gate_proj"
+  - "up_proj"
+  - "down_proj"
+
+# Training parameters
+output_dir: "./results/gemma-2b-finetuned"
+num_train_epochs: 3
+per_device_train_batch_size: 2
+gradient_accumulation_steps: 4
+learning_rate: 2.0e-4
+max_grad_norm: 0.3
+weight_decay: 0.001
+warmup_ratio: 0.03
+lr_scheduler_type: "cosine"
+
+# Memory optimization
+gradient_checkpointing: true
+max_seq_length: 1024
+
+# Logging and saving
+logging_steps: 10
+save_steps: 100
+eval_steps: 100
+save_total_limit: 3
+
+# Dataset configuration (update these)
+dataset_name: null  # e.g., "tatsu-lab/alpaca" or set train_file below
+dataset_text_field: "text"
+train_file: null  # e.g., "./data/train.json"
+validation_file: null  # e.g., "./data/val.json"
+
+# Misc
+seed: 42
+use_wandb: false  # Set to true to enable Weights & Biases logging
+wandb_project: "llm-finetuning"
+wandb_run_name: "gemma-2b-run"
+
+# Note: You may need to accept Gemma license terms on Hugging Face
+# Visit: https://huggingface.co/google/gemma-2b

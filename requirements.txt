@@ -1,0 +1,33 @@
+# Core dependencies for LLM finetuning on RTX 2080 (8GB VRAM)
+
+# PyTorch - CUDA support
+torch>=2.1.0
+torchvision>=0.16.0
+torchaudio>=2.1.0
+
+# Transformers and acceleration
+transformers>=4.36.0
+accelerate>=0.25.0
+peft>=0.7.0  # For LoRA/QLoRA
+bitsandbytes>=0.41.0  # For 4-bit quantization
+
+# Data processing
+datasets>=2.15.0
+sentencepiece>=0.1.99
+protobuf>=3.20.0
+
+# Training utilities
+trl>=0.7.4  # Transformer Reinforcement Learning
+scipy>=1.11.0
+wandb>=0.16.0  # Optional: for experiment tracking
+tensorboard>=2.15.0
+
+# Utilities
+numpy>=1.24.0
+pandas>=2.0.0
+tqdm>=4.66.0
+einops>=0.7.0
+
+# Optional: for specific tokenizers
+tokenizers>=0.15.0
+safetensors>=0.4.0
