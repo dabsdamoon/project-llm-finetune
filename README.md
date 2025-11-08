@@ -15,7 +15,10 @@ A comprehensive, memory-optimized setup for finetuning Large Language Models on 
 ### Hardware
 - **GPU**: NVIDIA RTX 2080 (8GB VRAM) or similar
 - **RAM**: 16GB+ system RAM recommended
-- **Storage**: 20GB+ free space for models and datasets
+- **Storage**: 10-40 GB free space (see [MODEL_STORAGE.md](MODEL_STORAGE.md) for details)
+  - Single model: 10-15 GB
+  - Multiple models: 30-40 GB
+  - **Note**: Models are downloaded once and cached locally
 
 ### Software
 - Python 3.8+
@@ -91,12 +94,14 @@ Review `GPU_COMPATIBILITY.md` for detailed model recommendations.
 
 **For RTX 2080 (8GB), we recommend:**
 
-| Model | Size | Speed | Quality | Config File |
-|-------|------|-------|---------|-------------|
-| **TinyLlama 1.1B** | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐⭐ | `configs/tinyllama_1b.yaml` |
-| **Phi-2 2.7B** | ⭐⭐⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐⭐⭐ | `configs/phi2_2.7b.yaml` |
-| **Gemma 2B** | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐⭐⭐ | `configs/gemma_2b.yaml` |
-| **Mistral 7B** | ⭐⭐ | ⭐⭐ | ⭐⭐⭐⭐⭐ | `configs/mistral_7b.yaml` |
+| Model | Download | VRAM (Training) | Speed | Quality | Config File |
+|-------|----------|----------------|-------|---------|-------------|
+| **TinyLlama 1.1B** | 2.2 GB | 4-5 GB | ⭐⭐⭐⭐⭐ | ⭐⭐⭐ | `configs/tinyllama_1b.yaml` |
+| **Phi-2 2.7B** | 5.4 GB | 5-6 GB | ⭐⭐⭐⭐ | ⭐⭐⭐⭐ | `configs/phi2_2.7b.yaml` |
+| **Gemma 2B** | 4.0 GB | 4-5 GB | ⭐⭐⭐⭐ | ⭐⭐⭐⭐ | `configs/gemma_2b.yaml` |
+| **Mistral 7B** | 14 GB | 7-8 GB | ⭐⭐ | ⭐⭐⭐⭐⭐ | `configs/mistral_7b.yaml` |
+
+**Note**: Models are downloaded once and cached in `~/.cache/huggingface/`. See [MODEL_STORAGE.md](MODEL_STORAGE.md) for detailed storage info.
 
 #### Step 3: Update Configuration
 
@@ -149,6 +154,7 @@ python inference.py \
 project-llm-finetune/
 ├── README.md                    # This file
 ├── GPU_COMPATIBILITY.md         # Detailed GPU and model compatibility guide
+├── MODEL_STORAGE.md            # Model download sizes and storage requirements
 ├── requirements.txt             # Python dependencies
 ├── check_gpu.py                # GPU verification script
 ├── train.py                    # Main training script
