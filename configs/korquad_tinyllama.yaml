@@ -1,0 +1,56 @@
+# Configuration for TinyLlama 1.1B with KorQuAD dataset
+# Korean Q&A finetuning
+
+# Model configuration
+model_name: "TinyLlama/TinyLlama-1.1B-Chat-v1.0"
+use_4bit: true
+use_8bit: false
+bnb_4bit_compute_dtype: "bfloat16"
+bnb_4bit_quant_type: "nf4"
+use_nested_quant: true
+
+# LoRA parameters
+lora_r: 16
+lora_alpha: 32
+lora_dropout: 0.05
+lora_target_modules:
+  - "q_proj"
+  - "k_proj"
+  - "v_proj"
+  - "o_proj"
+  - "gate_proj"
+  - "up_proj"
+  - "down_proj"
+
+# Training parameters
+output_dir: "./results/tinyllama-korquad"
+num_train_epochs: 3
+per_device_train_batch_size: 2
+gradient_accumulation_steps: 8
+learning_rate: 2.0e-4
+max_grad_norm: 0.3
+weight_decay: 0.001
+warmup_ratio: 0.03
+lr_scheduler_type: "cosine"
+
+# Memory optimization
+gradient_checkpointing: true
+max_seq_length: 1024
+
+# Logging and saving
+logging_steps: 10
+save_steps: 500
+eval_steps: 500
+save_total_limit: 3
+
+# Dataset configuration - Update these paths after conversion
+dataset_name: null
+dataset_text_field: "text"
+train_file: "./data/korquad/train.jsonl"  # Update this path
+validation_file: "./data/korquad/val.jsonl"  # Update this path
+
+# Misc
+seed: 42
+use_wandb: false
+wandb_project: "korquad-finetuning"
+wandb_run_name: "tinyllama-korquad"
