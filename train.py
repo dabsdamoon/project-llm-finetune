@@ -184,13 +184,20 @@ def load_and_prepare_dataset(config: ModelConfig, tokenizer):
 
     # Tokenize dataset
     def tokenize_function(examples):
+        import numpy as np
+
         outputs = tokenizer(
             examples[config.dataset_text_field],
             truncation=True,
             max_length=config.max_seq_length,
             padding="max_length",
         )
-        outputs["labels"] = outputs["input_ids"].copy()
+        # Mask padding tokens in labels (set them to -100 so loss ignores them)
+        # Using vectorized numpy operations for efficiency
+        labels = np.array(outputs["input_ids"])
+        attention_mask = np.array(outputs["attention_mask"])
+        labels[attention_mask == 0] = -100
+        outputs["labels"] = labels.tolist()
         return outputs
 
     tokenized_dataset = dataset.map(
@@ -248,7 +255,7 @@ def train(config: ModelConfig):
         logging_steps=config.logging_steps,
         save_steps=config.save_steps,
         eval_steps=config.eval_steps if "validation" in tokenized_dataset else None,
-        evaluation_strategy="steps" if "validation" in tokenized_dataset else "no",
+        eval_strategy="steps" if "validation" in tokenized_dataset else "no",
         save_total_limit=config.save_total_limit,
         fp16=False,
         bf16=True if config.bnb_4bit_compute_dtype == "bfloat16" else False,
